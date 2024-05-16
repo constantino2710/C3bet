@@ -1,3 +1,3 @@
-Equipe formada por: Guilherme Serretti
-                    Igor Leal
+Equipe formada por: Guilherme Serretti /
+                    Igor Leal /
                     João Constantino
