@@ -1,3 +1,0 @@
-Usuário: teste pag, Senha: 111
-Usuário: new name, Senha: 111
-Usuário: sem mensagem, Senha: 01

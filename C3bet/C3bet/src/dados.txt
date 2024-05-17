@@ -1,0 +1,4 @@
+Usuário: guipy, Senha: metal
+Usuário: ga, Senha: 12345
+Usuário: serretti, Senha: 101010
+Usuário: metal, Senha: Rondon
