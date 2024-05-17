@@ -64,7 +64,7 @@ public class C3bet extends JFrame {
                 if (!usuario.isEmpty() && !senha.isEmpty()) {
                     if (validarCredenciais(usuario, senha)) {
                         new UserPage(usuario, senha);
-                        dispose();  // Fechar a janela atual
+                        dispose(); 
                     } else {
                         JOptionPane.showMessageDialog(null, "Usuário ou senha incorretos.");
                     }
@@ -182,7 +182,7 @@ class CriarContaFrame extends JFrame {
                 String senha = new String(campoSenha.getPassword());
                 if (!usuario.isEmpty() && !senha.isEmpty()) {
                     salvarDados(usuario, senha);
-                    dispose();  // Fechar a janela de criação de conta
+                    dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos.");
                 }
@@ -315,7 +315,7 @@ class UserPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new DeletarContaFrame(usuario);
-                dispose();  // Fechar a UserPage ao abrir DeletarContaFrame
+                dispose();
             }
         });
         this.getContentPane().add(deletarConta);
@@ -385,8 +385,8 @@ class DeletarContaFrame extends JFrame {
                         if (validarSenha(selectedUser, senha)) {
                             deletarConta(selectedUser);
                             JOptionPane.showMessageDialog(null, "Conta deletada com sucesso!");
-                            new C3bet();  // Voltar para a tela inicial
-                            dispose();  // Fechar a janela de deletar conta
+                            new C3bet();
+                            dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Senha incorreta!");
                         }
