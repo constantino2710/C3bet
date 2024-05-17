@@ -33,7 +33,4 @@ C3Bet/
 │   ├── UserPage.java
 │   └── dados.txt
 └── README.md 
-
-## Estrutura do Projeto
-
 `
