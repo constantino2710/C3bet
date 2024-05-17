@@ -18,9 +18,8 @@ C3Bet é um projeto de Cacino para o trabalho de POO da UNICAP
     - Salvar os dados das contas em um arquivo .txt
     - Carregar os dados das contas e fazer login no site
 ## Diagrama de Classes
-
-![Diagrama de Classes](path/to/your/diagram.png)
-FortuneTiger/
+!
+C3Bet/
 │
 ├── src/
 │   ├── EsqueciSenhaFrame.java
