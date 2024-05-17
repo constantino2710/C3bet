@@ -18,7 +18,8 @@ C3Bet é um projeto de Cacino para o trabalho de POO da UNICAP
     - Salvar os dados das contas em um arquivo .txt
     - Carregar os dados das contas e fazer login no site
 ## Diagrama de Classes
-!
+```plaintext
+
 C3Bet/
 │
 ├── src/
