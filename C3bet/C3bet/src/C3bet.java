@@ -99,7 +99,7 @@ public class C3bet extends JFrame {
         });
         this.getContentPane().add(esqueciSenha);
 
-        String imagePath = "C:/Users/joaoc/Desktop/Códigos/faculdade/C3bet (2)/C3bet/C3bet/assets/LoginBet (6).png";
+        String imagePath = "./assets/LoginBet (6).png";
         File file = new File(imagePath);
         if (file.exists()) {
             ImageIcon icon = new ImageIcon(imagePath);
@@ -320,7 +320,7 @@ class UserPage extends JFrame {
         });
         this.getContentPane().add(deletarConta);
 
-        String imagePath = "C:/Users/joaoc/Desktop/Códigos/faculdade/C3bet (2)/C3bet/C3bet/assets/22392977-escada-ceu-paraiso-espiritual-luz-solar-gerar-ai-foto.jpg";
+        String imagePath = "./assets/22392977-escada-ceu-paraiso-espiritual-luz-solar-gerar-ai-foto.jpg";
         File file = new File(imagePath);
         if (file.exists()) {
             ImageIcon icon = new ImageIcon(imagePath);
