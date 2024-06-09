@@ -309,7 +309,7 @@ class UserPage extends JFrame {
 
         JButton deletarConta = new JButton();
         deletarConta.setText("Deletar Conta");
-        deletarConta.setBounds(725, 400, 150, 30);
+        deletarConta.setBounds(10, 10, 150, 30);
         deletarConta.setBackground(new Color(255, 107, 0));
         deletarConta.addActionListener(new ActionListener() {
             @Override
@@ -319,6 +319,19 @@ class UserPage extends JFrame {
             }
         });
         this.getContentPane().add(deletarConta);
+
+        JButton campoMinadoButton = new JButton("Campo Minado");
+        campoMinadoButton.setBounds(725, 400, 150, 30);
+        campoMinadoButton.setBackground(new Color(255, 107, 0));
+        campoMinadoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CampoMinado campoMinadoFrame = new CampoMinado(UserPage.this); // Passa a referência da tela atual
+                campoMinadoFrame.setVisible(true);
+                // Não fechar a tela atual
+            }
+        });
+        this.getContentPane().add(campoMinadoButton);
 
         String imagePath = "./assets/22392977-escada-ceu-paraiso-espiritual-luz-solar-gerar-ai-foto.jpg";
         File file = new File(imagePath);

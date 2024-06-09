@@ -4,16 +4,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class CampoMinado extends JFrame {
-    private final int NUM_MINAS = 10;
-    private final int GRID_SIZE = 10;
+    private final int NUM_MINAS = 5; // Número de minas reduzido para um grid menor
+    private final int GRID_SIZE = 5; // Grid 5x5
     private Celula[][] celulas = new Celula[GRID_SIZE][GRID_SIZE];
     private JLabel statusLabel;
+    private JFrame telaAnterior; // Referência para a tela anterior
 
-    public CampoMinado() {
+    public CampoMinado(JFrame telaAnterior) {
+        this.telaAnterior = telaAnterior;
+
         setTitle("Campo Minado");
-        setSize(500, 500);
+        setSize(300, 300); // Ajustando o tamanho da janela para o grid menor
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE); // Fechar somente a janela do Campo Minado
         setLayout(new BorderLayout());
 
         JPanel gridPanel = new JPanel(new GridLayout(GRID_SIZE, GRID_SIZE));
@@ -34,7 +37,8 @@ public class CampoMinado extends JFrame {
                             cell.revelar();
                             if (cell.temMina()) {
                                 JOptionPane.showMessageDialog(null, "Game Over!");
-                                System.exit(0);
+                                telaAnterior.setVisible(true); // Voltar para a tela anterior
+                                dispose();
                             }
                         } else if (e.getButton() == MouseEvent.BUTTON3) {
                             cell.toggleMarca();
@@ -73,7 +77,7 @@ public class CampoMinado extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            CampoMinado jogo = new CampoMinado();
+            CampoMinado jogo = new CampoMinado(null); // Null quando não há tela anterior
             jogo.setVisible(true);
         });
     }
