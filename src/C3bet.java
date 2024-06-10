@@ -2,6 +2,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import javax.swing.*;
 
 public class C3bet extends JFrame {
@@ -196,7 +199,7 @@ class CriarContaFrame extends JFrame {
     private void salvarDados(String usuario, String senha) {
         try {
             FileWriter writer = new FileWriter("dados.txt", true);
-            writer.write("Usuário: " + usuario + ", Senha: " + senha + "\n");
+            writer.write("Usuário: " + usuario + ", Senha: " + senha + ", Saldo: 0\n");
             writer.close();
             JOptionPane.showMessageDialog(null, "Conta criada com sucesso!");
         } catch (IOException ex) {
@@ -204,6 +207,7 @@ class CriarContaFrame extends JFrame {
             ex.printStackTrace();
         }
     }
+    
 }
 
 class EsqueciSenhaFrame extends JFrame {
@@ -293,34 +297,56 @@ class EsqueciSenhaFrame extends JFrame {
     }
 }
 
+
 class UserPage extends JFrame {
+    private String usuario;
+    private double saldo = 0; // Saldo inicial zero
+    private JLabel saldoLabel; // JLabel para exibir o saldo
+
     public UserPage(String usuario, String senha) {
         super();
-
+        this.usuario = usuario;
         this.getContentPane().setLayout(null);
         this.setSize(1600, 800);
         this.setTitle("User Page");
 
-        JLabel bemVindo = new JLabel();
-        bemVindo.setText("Bem-vindo, " + usuario);
+        // Mensagem de boas-vindas
+        JLabel bemVindo = new JLabel("Bem-vindo, " + usuario);
         bemVindo.setBounds(600, 50, 400, 50);
         bemVindo.setFont(new Font("Arial", Font.PLAIN, 30));
         this.getContentPane().add(bemVindo);
 
-        JButton deletarConta = new JButton();
-        deletarConta.setText("Deletar Conta");
-        deletarConta.setBounds(10, 10, 150, 30);
-        deletarConta.setBackground(new Color(255, 107, 0));
-        deletarConta.addActionListener(new ActionListener() {
+        // Configuração de JLabel para mostrar o saldo
+        saldoLabel = new JLabel("Saldo: $" + saldo);
+        saldoLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+        saldoLabel.setForeground(Color.BLACK);
+        saldoLabel.setBounds(1200, 50, 300, 50);
+        this.getContentPane().add(saldoLabel);
+
+        // Botão para adicionar saldo
+        JButton adicionarSaldoButton = new JButton("Adicionar Saldo");
+        adicionarSaldoButton.setBounds(1200, 120, 150, 30);
+        adicionarSaldoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new DeletarContaFrame(usuario);
-                dispose();
+                String valorString = JOptionPane.showInputDialog("Digite o valor a ser adicionado:");
+                try {
+                    double valor = Double.parseDouble(valorString);
+                    saldo += valor;
+                    saldoLabel.setText("Saldo: $" + saldo);
+                    atualizarSaldoNoArquivo();
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Por favor, insira um número válido.");
+                }
             }
         });
-        this.getContentPane().add(deletarConta);
+        this.getContentPane().add(adicionarSaldoButton);
 
-        JButton campoMinadoButton = new JButton("Campo Minado");
+        // Botão Campo Minado
+        // Botão Campo Minado
+ 
+            // Botão Campo Minado
+            JButton campoMinadoButton = new JButton("Campo Minado");
         campoMinadoButton.setBounds(725, 400, 150, 30);
         campoMinadoButton.setBackground(new Color(255, 107, 0));
         campoMinadoButton.addActionListener(new ActionListener() {
@@ -333,17 +359,29 @@ class UserPage extends JFrame {
         });
         this.getContentPane().add(campoMinadoButton);
 
+
+        // Botão Deletar Conta
+        JButton deletarConta = new JButton("Deletar Conta");
+        deletarConta.setBounds(10, 10, 150, 30);
+        deletarConta.setBackground(new Color(255, 107, 0));
+        deletarConta.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Deletar conta não implementado.");
+                // Implementação para deletar conta
+            }
+        });
+        this.getContentPane().add(deletarConta);
+
+        // Imagem de fundo
         String imagePath = "./assets/22392977-escada-ceu-paraiso-espiritual-luz-solar-gerar-ai-foto.jpg";
         File file = new File(imagePath);
         if (file.exists()) {
             ImageIcon icon = new ImageIcon(imagePath);
-            int width = 1600;
-            int height = 800;
-            Image resizedImage = icon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT);
+            Image resizedImage = icon.getImage().getScaledInstance(1600, 800, Image.SCALE_DEFAULT);
             ImageIcon resizedIcon = new ImageIcon(resizedImage);
-            JLabel imagemLabel = new JLabel();
-            imagemLabel.setIcon(resizedIcon);
-            imagemLabel.setBounds(0, 0, width, height);
+            JLabel imagemLabel = new JLabel(resizedIcon);
+            imagemLabel.setBounds(0, 0, 1600, 800);
             this.getContentPane().add(imagemLabel);
             this.getContentPane().setComponentZOrder(imagemLabel, this.getContentPane().getComponentCount() - 1);
         } else {
@@ -352,7 +390,38 @@ class UserPage extends JFrame {
 
         this.setVisible(true);
     }
+
+    private void atualizarSaldoNoArquivo() {
+        Path path = Paths.get("dados.txt");
+        try {
+            List<String> fileContent = Files.readAllLines(path, StandardCharsets.UTF_8);
+
+            for (int i = 0; i < fileContent.size(); i++) {
+                if (fileContent.get(i).contains("Usuário: " + usuario + ",")) {
+                    String[] parts = fileContent.get(i).split(", ");
+                    if (parts.length == 3) {
+                        fileContent.set(i, parts[0] + ", " + parts[1] + ", Saldo: " + String.format("%.2f", saldo));
+                    }
+                }
+            }
+
+            Files.write(path, fileContent, StandardCharsets.UTF_8);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar o saldo: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new UserPage("exampleUser", "examplePassword").setVisible(true);
+            }
+        });
+    }
 }
+
+
 
 class DeletarContaFrame extends JFrame {
     private String usuarioAtual;
