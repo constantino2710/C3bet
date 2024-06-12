@@ -102,7 +102,7 @@ public class CampoMinado extends JFrame {
         int totalQuadrados = GRID_SIZE * GRID_SIZE;
         int quadradosSemMina = totalQuadrados - NUM_MINAS;
         double porcentagemRevelada = (quadradosRevelados / (double) quadradosSemMina) * 100;
-        JOptionPane.showMessageDialog(null, String.format("Você ganhou %.2f%% a mais", porcentagemRevelada));
+        JOptionPane.showMessageDialog(null, String.format("Você ganhou %.2f%% a mais!\nSeu bônus irá chegar em até 24 horas.", porcentagemRevelada));
     }
 
     public static void main(String[] args) {

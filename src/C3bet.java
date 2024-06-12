@@ -126,8 +126,12 @@ public class C3bet extends JFrame {
         try (BufferedReader reader = new BufferedReader(new FileReader("dados.txt"))) {
             String currentLine;
             while ((currentLine = reader.readLine()) != null) {
-                if (currentLine.contains("Usuário: " + usuario + ", Senha: " + senha)) {
-                    return true;
+                String[] parts = currentLine.split(", ");
+                for (String part : parts) {
+                    if (part.startsWith("Usuário: ") && part.substring(9).equals(usuario) &&
+                        parts.length >= 2 && parts[1].startsWith("Senha: ") && parts[1].substring(7).equals(senha)) {
+                        return true;
+                    }
                 }
             }
         } catch (IOException ex) {
@@ -343,32 +347,49 @@ class UserPage extends JFrame {
         this.getContentPane().add(adicionarSaldoButton);
 
         // Botão Campo Minado
-        // Botão Campo Minado
- 
-            // Botão Campo Minado
-            JButton campoMinadoButton = new JButton("Campo Minado");
+        JButton campoMinadoButton = new JButton("Campo Minado");
         campoMinadoButton.setBounds(725, 400, 150, 30);
         campoMinadoButton.setBackground(new Color(255, 107, 0));
         campoMinadoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CampoMinado campoMinadoFrame = new CampoMinado(UserPage.this); // Passa a referência da tela atual
-                campoMinadoFrame.setVisible(true);
-                // Não fechar a tela atual
+                // Verifica se o saldo é suficiente
+                if (saldo >= 2) {
+                    // Deduz 2 do saldo
+                    saldo -= 2;
+                    // Atualiza o saldo exibido na interface gráfica
+                    saldoLabel.setText("Saldo: $" + saldo);
+                    
+                    // Inicia o jogo de Campo Minado
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            try {
+                                CampoMinado campoMinadoFrame = new CampoMinado(UserPage.this);
+                                campoMinadoFrame.setVisible(true);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+                } else {
+                    // Exibe mensagem de saldo insuficiente
+                    JOptionPane.showMessageDialog(null, "Saldo insuficiente! Por favor, faça uma recarga.");
+                }
             }
         });
+        
         this.getContentPane().add(campoMinadoButton);
 
-
         // Botão Deletar Conta
-        JButton deletarConta = new JButton("Deletar Conta");
+        JButton deletarConta = new JButton();
+        deletarConta.setText("Deletar Conta");
         deletarConta.setBounds(10, 10, 150, 30);
         deletarConta.setBackground(new Color(255, 107, 0));
         deletarConta.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Deletar conta não implementado.");
-                // Implementação para deletar conta
+                new DeletarContaFrame(usuario);
+                dispose();
             }
         });
         this.getContentPane().add(deletarConta);
@@ -420,7 +441,6 @@ class UserPage extends JFrame {
         });
     }
 }
-
 
 
 class DeletarContaFrame extends JFrame {
